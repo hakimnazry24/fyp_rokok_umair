@@ -10,8 +10,14 @@ import { Stack } from 'expo-router';
 export default function RootLayout() {
   return (
     <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
-      </Stack>
+      <Stack.Screen name="register" options={{ headerShown: false }} />
+      <Stack.Screen name="check-id" options={{ title: 'Check Cigarette ID' }} />
+      <Stack.Screen name="cigarette-verification-status" options={{ headerShown: false }} />
+      <Stack.Screen name="key-in-birthday" options={{ headerShown: false }} />
+      <Stack.Screen name="age-verification-status" options={{ headerShown: false }} />
+    </Stack>
   );
 }

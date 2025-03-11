@@ -1,11 +1,17 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const router = useRouter();
+
+  function handleLogin() {
+    router.push('/home');
+  }
 
   return (
     <View className="p-6 py-20">
@@ -31,9 +37,11 @@ export default function LoginPage() {
         secureTextEntry={!isShowPassword}
         onChangeText={(newPassword) => setPassword(newPassword)}
       />
-      <Text className="text-gray-500" onPress={() => setIsShowPassword(!isShowPassword)}>{isShowPassword ? 'Hide' : 'Show'} password</Text>
+      <Text className="text-gray-500" onPress={() => setIsShowPassword(!isShowPassword)}>
+        {isShowPassword ? 'Hide' : 'Show'} password
+      </Text>
 
-      <TouchableOpacity className="mb-10 mt-20">
+      <TouchableOpacity className="mb-10 mt-20" onPress={handleLogin}>
         <Text className="mx-auto w-full rounded-full bg-blue-700 py-4 text-center font-semibold text-white">
           Login
         </Text>
