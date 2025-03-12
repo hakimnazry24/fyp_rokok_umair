@@ -9,11 +9,16 @@ export default function KeyInBirthday() {
   const router = useRouter();
 
   function handleVerifyAge() {
+    let isEligible = true;
     //do something
     //
     //
 
-    router.replace('/age-verification-status');
+    if (isEligible) {
+      router.push('/is-eligible');
+    } else {
+      router.push('/is-not-eligible');
+    }
   }
 
   return (

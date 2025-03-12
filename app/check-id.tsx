@@ -7,11 +7,16 @@ export default function CheckIdPage() {
   const router = useRouter();
 
   function handleCheckCigaretteId() {
+    let isCounterfeit = false;
     // do something
     //
     //
 
-    router.push('/cigarette-verification-status');
+    if (!isCounterfeit) {
+      router.push('/is-not-counterfeit');
+    } else {
+      router.push('/is-counterfeit');
+    }
   }
 
   return (
@@ -19,7 +24,7 @@ export default function CheckIdPage() {
       <View>
         <View>
           <Text className="text-center">
-            Key in the Cigarette Unique ID to determine if countefeit cigarette or not
+            Key in the Cigarette Unique ID to determine if counterfeit cigarette or not
           </Text>
           <TextInput
             value={cigaretteId}

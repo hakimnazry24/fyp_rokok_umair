@@ -7,10 +7,10 @@ export default function NotEligibleForPurchase() {
 
   return (
     <View>
-      <AntDesign name="checkcircle" size={100} color={'green'} className="mx-auto mb-6 w-fit" />
+      <AntDesign name="closecircle" size={100} color={'red'} className="mx-auto mb-6 w-fit" />
       <Text className="text-center text-2xl font-semibold">Not eligible!</Text>
       <Text className="text-md text-center text-gray-500">
-        The product is has been verified as not a counterfeit
+        The person is considered not eligible because underage
       </Text>
       <TouchableOpacity
         onPress={() => router.push('/key-in-birthday')}

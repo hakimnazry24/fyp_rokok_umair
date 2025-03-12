@@ -7,13 +7,13 @@ export default function EligibileForPurchase() {
 
   return (
     <View>
-      <AntDesign name="closecircle" size={100} color={'red'} className="mx-auto mb-6 w-fit" />
+      <AntDesign name="checkcircle" size={100} color={'green'} className="mx-auto mb-6 w-fit" />
       <Text className="text-center text-2xl font-semibold">Eligible!</Text>
       <Text className="text-md text-center text-gray-500">
         The customer is eligible for the cigarette purchase. Proceed with the transaction
       </Text>
       <TouchableOpacity
-        onPress={() => router.replace('/home')}
+        onPress={() => router.replace('/transaction-details')}
         className="mx-auto mt-14 w-32 rounded-full bg-blue-700 py-4">
         <Text className="text-center font-semibold text-white">Next</Text>
       </TouchableOpacity>
