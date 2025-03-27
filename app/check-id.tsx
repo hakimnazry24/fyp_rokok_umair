@@ -4,19 +4,25 @@ import { useRouter } from 'expo-router';
 
 export default function CheckIdPage() {
   const [cigaretteId, setCigaretteId] = useState('');
+  const [cigarette, setCigarette] = useState({})
+  const [error, setError] = useState("")
   const router = useRouter();
 
-  function handleCheckCigaretteId() {
-    let isCounterfeit = false;
-    // do something
-    //
-    //
+  async function handleCheckCigaretteId() {
+    if (cigaretteId.length > 0) {
+      const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/cigarette?id=${cigaretteId}`, { method: "get" })
+      // cigarette found , not counterfeit
+      if (res.status === 200) {
+        const data = await res.json()
+        setCigarette(data)
+        router.push({ pathname: "/is-not-counterfeit", params: data })
 
-    if (!isCounterfeit) {
-      router.push('/is-not-counterfeit');
-    } else {
-      router.push('/is-counterfeit');
-    }
+        // cigarette not found, couterfeit
+      } else if (res.status === 404) {
+        router.push("/is-counterfeit")
+      }
+    } else setError("Enter cigarette ID")
+
   }
 
   return (
@@ -24,6 +30,7 @@ export default function CheckIdPage() {
       <View>
         <View>
           <Text className="text-center">
+
             Key in the Cigarette Unique ID to determine if counterfeit cigarette or not
           </Text>
           <TextInput
@@ -37,6 +44,7 @@ export default function CheckIdPage() {
             onPress={handleCheckCigaretteId}>
             <Text className="text-center font-semibold text-white">Check</Text>
           </TouchableOpacity>
+          <Text className='text-center text-red-500'>{error}</Text>
         </View>
       </View>
     </View>

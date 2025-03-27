@@ -4,13 +4,39 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState("")
   const [isShowPassword, setIsShowPassword] = useState(false);
   const router = useRouter();
 
-  function handleLogin() {
-    router.push('/home');
+  async function handleLogin() {
+    try {
+      console.log(`Logging in...`)
+
+      if (username.length > 0 && password.length > 0) {
+        const data = {
+          username, password
+        }
+        const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/login`, {
+          method: "post", headers: {
+            "Content-Type": "application/json"
+          }
+          , body: JSON.stringify(data)
+        })
+
+        if (res.status === 200) {
+          router.push("/home")
+        } else if (res.status === 404) {
+          setError("User not found")
+        }
+      } else {
+        setError("Please enter your username and password")
+      }
+    } catch (error: any) {
+      console.error(`Failed to login: ${error.message}`)
+      setError("Failed to login. Something is wrong with server")
+    }
   }
 
   return (
@@ -21,12 +47,12 @@ export default function LoginPage() {
         <Link href="/register">Register now!</Link>
       </Text>
 
-      <Text className="text-gray-500">Email</Text>
+      <Text className="text-gray-500">Username</Text>
       <TextInput
         className="mb-6 border-b-2 p-4 focus:border-blue-700"
-        placeholder="Enter your email address"
-        value={email}
-        onChangeText={(newText) => setEmail(newText)}
+        placeholder="Enter your username"
+        value={username}
+        onChangeText={(newText) => setUsername(newText)}
       />
 
       <Text className="text-gray-500">Password</Text>
@@ -46,6 +72,7 @@ export default function LoginPage() {
           Login
         </Text>
       </TouchableOpacity>
+      <Text className='text-red-500 text-center'>{error}</Text>
     </View>
   );
 }
