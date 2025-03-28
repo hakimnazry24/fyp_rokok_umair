@@ -14,7 +14,6 @@ export default function RecordPage() {
       const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/records`, { method: "get" })
       const data = await res.json()
       setRecords(data)
-      console.log(data)
 
       console.log("Fetch records success")
     } catch (error: any) {

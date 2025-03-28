@@ -1,25 +1,13 @@
 import { View, Text, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { useRecordContext } from '~/hooks/RecordProvider';
 
 export default function TransactionDetailsPage() {
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
   const [displayCancelModal, setDisplayCancelModal] = useState(false);
-
-  const productDetail = {
-    status: 'Authentic',
-    brand: 'Marlboro Red',
-    batchNumber: '213-213-MY',
-    manufactureDate: new Date(),
-    origin: 'Kuala Lumpur, Malaysia',
-    compliance: 'Verified',
-  };
-
-  const customerDetail = {
-    age: 22,
-    icStatus: 'Valid',
-  };
+  const { record, } = useRecordContext()
 
   return (
     <View className="p-5 py-16">
@@ -29,24 +17,22 @@ export default function TransactionDetailsPage() {
         </Text>
         <View className="p-3">
           <Text className="mb-2">
-            <Text className="font-semibold">Brand: </Text> {productDetail.brand}
+            <Text className="font-semibold">Product Name: </Text> {record.product}
           </Text>
-          <Text className="mb-2">
-            <Text className="font-semibold">Batch Number: </Text>
-            {productDetail.batchNumber}
-          </Text>
+
           <Text className="mb-2">
             <Text className="font-semibold">Manufacture Date: </Text>
-            {productDetail.manufactureDate.toString()}
+            {record.manufacturedDate?.toString().split("T")[0]}
           </Text>
           <Text className="mb-2">
-            <Text className="font-semibold">Origin: </Text>
-            {productDetail.origin}
+            <Text className="font-semibold">Retailer: </Text>
+            {record.retailer}
           </Text>
           <Text className="mb-2">
-            <Text className="font-semibold">Compliance: </Text>
-            {productDetail.compliance}
+            <Text className="font-semibold">Factory: </Text>
+            {record.factory}
           </Text>
+
         </View>
       </View>
       <View className="rounded-lg border">
@@ -55,12 +41,19 @@ export default function TransactionDetailsPage() {
         </Text>
         <View className="p-3">
           <Text className="mb-2">
-            <Text className="font-semibold">Age Verified: </Text> {customerDetail.age} (Eligible) ✅
+            <Text className="font-semibold">Age Verified: </Text> {record.customerAge} (Eligible) ✅
           </Text>
           <Text className="mb-2">
-            <Text className="font-semibold">IC Status: </Text>
-            {customerDetail.icStatus}
+            <Text className="font-semibold">Customer name: </Text> {record.customerName}
           </Text>
+          <Text className="mb-2">
+            <Text className="font-semibold">MyKad Number: </Text> {record.ic}
+          </Text>
+
+          {/* <Text className="mb-2">
+            <Text className="font-semibold">IC Number: </Text>
+            {record.}
+          </Text> */}
         </View>
       </View>
       <View className="mt-10 flex flex-row gap-x-5">

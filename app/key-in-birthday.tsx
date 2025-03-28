@@ -1,21 +1,48 @@
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useRecordContext } from '~/hooks/RecordProvider';
 
 export default function KeyInBirthday() {
   const [fullName, setFullName] = useState('');
   const [icNumber, setIcNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("")
   const router = useRouter();
+  const { record, setRecord } = useRecordContext()
 
-  function handleVerifyAge() {
-    let isEligible = true;
-    //do something
-    //
-    //
+  async function handleVerifyAge() {
+    let isEligible = false;
+
+    if (fullName.length <= 0 || icNumber.length <= 0) {
+      setError("Enter name and MyKad")
+      return
+    }
+
+    const data = {
+      name: fullName,
+      ic: icNumber
+    }
+
+    const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/verify-age`, {
+      method: "post", body: JSON.stringify(data), headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    const fetchedData = await res.json()
+    isEligible = fetchedData.result === "legal"
 
     if (isEligible) {
-      router.push('/is-eligible');
+      setRecord({
+        ...record,
+        customerAge: fetchedData.customerAge,
+        customerName: fullName,
+        datePurchase: new Date(),
+        retailer: process.env.EXPO_PUBLIC_RETAILER!,
+        ic: icNumber,
+      })
+      router.push("/is-eligible");
     } else {
       router.push('/is-not-eligible');
     }
@@ -58,6 +85,8 @@ export default function KeyInBirthday() {
         We only use the back IC number for verification purposes and do not store your
         information{' '}
       </Text>
+
+      <Text className='text-center text-red-500 mt-5'>{error}</Text>
     </View>
   );
 }

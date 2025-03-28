@@ -1,20 +1,30 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useContext } from 'react';
+import { useRecordContext } from '~/hooks/RecordProvider';
 
 export default function CheckIdPage() {
   const [cigaretteId, setCigaretteId] = useState('');
   const [cigarette, setCigarette] = useState({})
   const [error, setError] = useState("")
   const router = useRouter();
+  const { record, setRecord } = useRecordContext()
 
   async function handleCheckCigaretteId() {
     if (cigaretteId.length > 0) {
       const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/cigarette?id=${cigaretteId}`, { method: "get" })
+
       // cigarette found , not counterfeit
       if (res.status === 200) {
         const data = await res.json()
         setCigarette(data)
+        setRecord({
+          ...record,
+          product: data.name,
+          manufacturedDate: data.manufactured_date,
+          factory: data.factory,
+        })
         router.push({ pathname: "/is-not-counterfeit", params: data })
 
         // cigarette not found, couterfeit

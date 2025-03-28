@@ -1,10 +1,13 @@
 export type RecordType = {
   id: string;
-  dateTime: Date;
+  manufacturedDate: Date | null;
   product: string;
   customerAge: number;
   retailer: string;
-  created_at: Date;
+  ic: string | null,
+  factory: string | null
+  datePurchase: Date | null
+  customerName : string | null
 };
 
 export type CigaretteType = {
